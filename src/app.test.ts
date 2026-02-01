@@ -1,5 +1,6 @@
 import request from 'supertest';
-import app, { clearReservations } from './app';
+import app from './app';
+import { clearReservations } from './routes/reservation';
 
 describe('Room Reservation API', () => {
   beforeEach(() => {
