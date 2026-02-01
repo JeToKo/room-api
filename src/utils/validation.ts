@@ -1,5 +1,18 @@
 import Reservation from '../types/reservation';
 
+const isValidParams = (roomId: any, startTime: any, endTime: any): { valid: boolean; error?: string } => {
+    if (!roomId || !startTime || !endTime) {
+        return { valid: false, error: 'Missing required fields: roomId, startTime, endTime' };
+    }
+
+    if (typeof roomId !== 'string' || !roomId.trim()) {
+        return { valid: false, error: 'Invalid roomId' };
+    }
+
+    return { valid: true };
+    
+};
+
 const isValidReservation = (startTime: Date, endTime: Date, roomId: string, reservations: Reservation[], excludeId?: string): { valid: boolean; error?: string } => {
     const now = new Date();
 
@@ -26,4 +39,4 @@ const isValidReservation = (startTime: Date, endTime: Date, roomId: string, rese
     return { valid: true };
 };
 
-export default isValidReservation;
+export { isValidParams, isValidReservation };

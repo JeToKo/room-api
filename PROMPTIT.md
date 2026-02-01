@@ -141,3 +141,24 @@ Updated: app.ts ✅
 💡 Tip: Run the test suite (npm test) to confirm everything still passes. If you want, I can run the tests for you now.
 
 If you want the endpoints prefixed under /api or want any additional refactor (e.g., moving server start to a separate file for testing), tell me which option you prefer and I’ll apply it.
+
+
+
+Prompti:
+Why is jest giving following error? What is a simple fix. Do not use new libraries.
+
+Jest has detected the following 1 open handle potentially keeping Jest from exiting:
+
+● TCPSERVERWRAP
+
+
+Vastaus:
+Finding: Jest stays open because the server is started unconditionally in app.ts, leaving a TCP handle active. Next, I'll wrap app.listen in a guard so it does not run in the test environment.
+
+Edited
+app.ts+6-3
+✅ Why Jest reports that error (short)
+The error means a TCP server handle is still open when Jest is trying to exit.
+app.listen(...) is called when tests import app, so the server stays running and Jest detects the open handle.
+🔧 Simple fix (no new libraries)
+Prevent the server from starting while running tests. Wrap app.listen like this:
