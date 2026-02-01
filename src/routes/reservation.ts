@@ -13,15 +13,22 @@ router.get('/', (req: Request, res: Response) => {
   res.send('Hello World!');
 });
 
-// GET /reservations - Get all reservations
-router.get('/reservations', (req: Request, res: Response) => {
-  const response = reservations.map((r) => ({
-    id: r.id,
-    roomId: r.roomId,
-    startTime: r.startTime.toISOString(),
-    endTime: r.endTime.toISOString(),
-  }));
-  res.json(response);
+
+router.get('/reservation/:roomId', (req: Request, res: Response) => {
+    const { roomId } = req.params;
+      if (!roomId) {
+    res.status(400).json({ error: 'Missing room ID parameter' });
+    return;
+  }
+    const roomReservations = reservations.filter((r) => r.roomId === roomId);
+    res.json(
+        roomReservations.map((r) => ({
+            id: r.id,
+            roomId: r.roomId,
+            startTime: r.startTime.toISOString(),
+            endTime: r.endTime.toISOString(),
+        }))
+    );
 });
 
 // POST /reservation - Create a new reservation

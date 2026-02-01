@@ -21,31 +21,31 @@ describe('Room Reservation API', () => {
     });
   });
 
-  describe('GET /reservations', () => {
+  describe('GET /reservation/:roomId', () => {
     it('should return an empty array initially', async () => {
-      const response = await request(app).get('/reservations');
+      const response = await request(app).get('/reservation/101');
       expect(response.status).toBe(200);
       expect(response.body).toEqual([]);
     });
 
     it('should return all reservations', async () => {
-      // Create a reservation first
       const startTime = getFutureDate(1);
       const endTime = getFutureDate(2);
 
       await request(app).post('/reservation').send({
-        roomId: 'room1',
+        roomId: '101',
         startTime: startTime.toISOString(),
         endTime: endTime.toISOString(),
       });
 
-      const response = await request(app).get('/reservations');
+      const response = await request(app).get('/reservation/101');
       expect(response.status).toBe(200);
       expect(response.body.length).toBeGreaterThan(0);
       expect(response.body[0]).toHaveProperty('id');
       expect(response.body[0]).toHaveProperty('roomId');
       expect(response.body[0]).toHaveProperty('startTime');
       expect(response.body[0]).toHaveProperty('endTime');
+      expect(response.body[0].roomId).toBe('101');
     });
   });
 
